@@ -10,8 +10,8 @@
 	tablex(
 		auto-lines: false, align: center, inset: 0.6em,
 		..(if variables > 0 {(colspanx(variables)[], vlinex())}),
-		colspanx(named_args.premises)[#text(size: 1.3em)[*Premises*]],vlinex(),
-		colspanx(named_args.conclusions)[#text(size: 1.3em)[*Conclusions*]],
+		colspanx(named_args.premises)[*Premises*],vlinex(),
+		colspanx(named_args.conclusions)[*Conclusions*],
 		hlinex(y:2),
 		map-rows: (row, cells) => {
 			let arg_cells = cells.filter(c =>
