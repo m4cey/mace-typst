@@ -1,33 +1,52 @@
 #import "@preview/tablex:0.0.7": *
 // General Tablex style
-#let mytablex(..args) = tablex(auto-lines: false, align: center, inset: 0.6em, ..args)
+#let mytablex(..args) = tablex(inset: 0.6em, ..args)
 // Logic Tables
-#let truth_table(..args) = mytablex(hlinex(y:1))
-#let pc_table(..args) = tablex(auto-lines: false, hlinex(y:1), align: center, inset: 0.6em, ..args)
+#let truth_table(..args) = mytablex(auto-lines: false, align: center, hlinex(y:1), ..args)
+#let pc_table(..args) = {
+	let named_args = args.named()
+	let variables = named_args.columns.len() - named_args.premises - named_args.conclusions
+	tablex(
+		auto-lines: false, align: center, inset: 0.6em,
+		..(if variables > 0 {(colspanx(variables)[], vlinex())}),
+		colspanx(named_args.premises)[*Premises*],vlinex(),
+		colspanx(named_args.conclusions)[#text(size: 1.3em)[*Conclusions*]],
+		hlinex(y:2),
+		..args
+	)
+}
 
 
 // TESTS
+#[
+#show heading.where(level: 1): it => [
+	#let str = it.body.fields().children.fold("#", (a, i) => a + i.text )
+	#raw(lang: "typ", str + ":" )]
+
+= truth_table
 #truth_table(
-columns: 3,
-[1], [2], [3],
-[4], [5], [6],
-[7], [8], [9],
-cellx(colspan:3, align: center)[0]
+	columns: 4,
+	$P$, $not Q$, $P or not Q$, $not(P or not Q)$,
+	[F], [T], [T], [F],
+	[F], [F], [F], [T],
+	[T], [T], [T], [F],
+	[T], [F], [T], [F],
 )
-#truth_table(
-		columns: (auto,auto, 3fr, 1fr, 2fr),
-		[], [], vlinex(), colspanx(2)[Premises],vlinex(),  [Conclusion],
-		$S$, $L$, $(not S and L) or S$, $S$, $not L$,
-		hlinex(),
-		[F], [F], [F], [F], [T],
-		[F], [T], [T], [F], [F],
-		[T], [F], [T], [T], [T],
-		[T], [T], [T], [T], [F],
-		map-rows: (row, cells) => cells.map(c =>
-			if c == none {
-				c
-			} else {
-				(..c, fill: if row == 4 { color.gray } else if row == 5 { color.red })
-			}
-		),
-	)
+= pc_table
+#pc_table(
+	premises: 2, conclusions: 1,
+	columns: (auto,auto, 3fr, 1fr, 2fr),
+	$S$, $L$, $(not S and L) or S$, $S$, $not L$,
+	[F], [F], [F], [F], [T],
+	[F], [T], [T], [F], [F],
+	[T], [F], [T], [T], [T],
+	[T], [T], [T], [T], [F],
+	map-rows: (row, cells) => cells.map(c =>
+		if c == none {
+			c
+		} else {
+			(..c, fill: if row == 4 { color.gray } else if row == 5 { color.red })
+		}
+	),
+)
+]
