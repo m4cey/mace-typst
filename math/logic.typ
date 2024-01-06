@@ -3,6 +3,7 @@
 #let mytablex(..args) = tablex(inset: 0.6em, ..args)
 // Logic Tables
 #let truth_table(..args) = mytablex(auto-lines: false, align: center, hlinex(y:1), ..args)
+// pc stands for premises and conclusions
 #let pc_table(..args) = {
 	let named_args = args.named()
 	let columns_len = if type(named_args.columns) == "array" {named_args.columns.len()} else {named_args.columns}
@@ -39,7 +40,6 @@
 		..args
 	)
 }
-
 
 // TESTS
 #[
