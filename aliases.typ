@@ -1,4 +1,4 @@
-#let space_around(vertical: false, outer: 3fr, inner: 1fr, sep:",", ..args) = {
+#let space_around(vertical: false, outer: 3fr, inner: 1fr, sep:"", ..args) = {
 	let space(vertical, size) = if vertical {v(size)} else {h(size)}
 	[
 		#space(vertical, outer)
