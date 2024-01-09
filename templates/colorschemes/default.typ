@@ -1,2 +1,1 @@
-#let background = rgb("444")
-#let foreground = rgb("fff")
+/home/mace/.cache/wal/default.typ
